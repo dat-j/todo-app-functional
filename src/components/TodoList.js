@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import Todo from './Todo'
+import WithScroll from './HOC';
+
+
 const TodoList = (props) => {
   const {arr, delTodo} = props;
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,5 +42,5 @@ const TodoList = (props) => {
     </>
   );
 }
-
-export default TodoList
+const HOC = WithScroll(TodoList);
+export default TodoList;

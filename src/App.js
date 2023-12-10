@@ -71,7 +71,7 @@ const App = () => {
     }
   }
   return (
-    <div className={"w-3/4 h-[600px] bg-red-300 mx-auto "+ theme }>
+    <div className={"w-3/4 !h-[610px] bg-red-300 mx-auto "+ theme }>
       <h1 className="text-center text-8xl text-rose-400 font-bold">TODOS</h1>
       <Header addTodo={addTodo} ref={headerRef} updateTodo={updateTodo}/>
       <Toggle />
