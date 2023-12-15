@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-const WithScroll = (WrappedComponent) => {
-  return function WithScrollComponent(props) {
-    const { arr } = props;
-    const scrollRef = useRef(null);
+import React,{ useEffect, useState } from "react";
+
+export const useScroll = (ref,arr) => {
     const [list, setList] = useState(arr.slice(0, 10));
     const [renderItems, setRenderItems] = useState(13);
     const renderMoreItems = 3;
@@ -10,7 +8,7 @@ const WithScroll = (WrappedComponent) => {
     const handleScroll = (e) => {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
       const bottom = scrollHeight - scrollTop - clientHeight;
-      if (bottom<=20) {
+      if (!bottom) {
         setLoading(true);
         getMoreData();
       }
@@ -18,28 +16,16 @@ const WithScroll = (WrappedComponent) => {
     const getMoreData = () => {
       setTimeout(() => {
         setList(arr.slice(0, renderItems));
-
         setRenderItems(renderItems + renderMoreItems);
         console.log("running setTimeOut");
         setLoading(false);
       }, 3000);
     };
     useEffect(() => {
-      if (scrollRef.current) {
-        scrollRef.current.addEventListener("scroll", handleScroll);
+      if (ref.current) {
+        ref.current.addEventListener("scroll", handleScroll);
       }
     }, []);
 
-    return (
-      <WrappedComponent
-        {...props}
-        list={list}
-        handleScroll={handleScroll}
-        scrollRef={scrollRef}
-        loading={loading}
-      />
-    );
-  };
-};
-
-export default WithScroll;
+    return {list, loading}
+}
