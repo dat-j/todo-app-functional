@@ -46,7 +46,7 @@ function todoReducer(arr, action){
   }
 }
 let res = await axios.get('https://6588fac4324d4171525855f8.mockapi.io/api/todos');
-//??????????
+// >ES13 can use await at top-level-module without async
 
 
 const App = () => {
@@ -71,6 +71,7 @@ const App = () => {
   //   };
   //   fetchData(); 
   // }, []); 
+  
   // useEffect(() => {
   //   axios.get('https://6588fac4324d4171525855f8.mockapi.io/api/todos')
   //     .then(res => {
