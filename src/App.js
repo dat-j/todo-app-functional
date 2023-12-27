@@ -46,6 +46,8 @@ function todoReducer(arr, action){
   }
 }
 let res = await axios.get('https://6588fac4324d4171525855f8.mockapi.io/api/todos');
+//??????????
+
 
 const App = () => {
   const [arr, dispatch] = useReducer(todoReducer, res.data);
@@ -56,6 +58,19 @@ const App = () => {
   const setTodoStatus = (value)=>{
     setStatus(value);
   }
+  // const [list, setList] = useState(null);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+        
+  //       const response = await axios.get('https://6588fac4324d4171525855f8.mockapi.io/api/todos');
+  //       setList(response.data); 
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+  //   fetchData(); 
+  // }, []); 
   // useEffect(() => {
   //   axios.get('https://6588fac4324d4171525855f8.mockapi.io/api/todos')
   //     .then(res => {
@@ -63,6 +78,7 @@ const App = () => {
   //       return res.data;
   //     })
   // }, []);
+
 //filter
   const filterByStatus = (arr, status) => {
     switch (status) {
