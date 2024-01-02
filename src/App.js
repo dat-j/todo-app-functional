@@ -16,22 +16,29 @@ export const filterStatus = {
   done: "done",
   notDone: "notDone"
 };
+const todoAction = {
+  add:"add",
+  delete:"delete",
+  update:"update",
+  checkbox:"click check box"
+}
+let x=1;
 function todoReducer(arr, action){
   switch(action.type){
-    case 'add':{
+    case todoAction.add:{
       return [
         {
-          id: new Date().valueOf(),
+          id: 1,
           text: action.text,
           isDone: false,
         },
         ...arr,
       ];
     }
-    case 'delete':{
+    case todoAction.delete:{
       return arr.filter(item => item.id !== action.id);
     }
-    case 'update':{
+    case todoAction.update:{
       return arr.map((todo) => {
         if (todo.id === action.id) {
           return { ...todo, id: action.id,text:action.text };
@@ -39,7 +46,7 @@ function todoReducer(arr, action){
         return todo ;
       });
     }
-    case 'checkbox':{
+    case todoAction.checkbox:{
       return arr.map((todo)=>
         todo.id===action.id?{...todo, isDone: !todo.isDone}:todo);
     }
@@ -50,6 +57,7 @@ let res = await axios.get('https://6588fac4324d4171525855f8.mockapi.io/api/todos
 
 
 const App = () => {
+  const [list, setList] = useState([]);
   const [arr, dispatch] = useReducer(todoReducer, res.data);
   const [scroll, setScroll]= useState(false);
   const {theme} = useContext(themeContext);
@@ -58,7 +66,7 @@ const App = () => {
   const setTodoStatus = (value)=>{
     setStatus(value);
   }
-  // const [list, setList] = useState(null);
+  
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
@@ -70,7 +78,7 @@ const App = () => {
   //     }
   //   };
   //   fetchData(); 
-  // }, []); 
+  // }, [list]); 
   
   // useEffect(() => {
   //   axios.get('https://6588fac4324d4171525855f8.mockapi.io/api/todos')
@@ -92,7 +100,7 @@ const App = () => {
     }
   };
   const filterItemLeft = (arr) => {
-    return arr.filter((item) => !item.isDone);
+    return arr?.filter((item) => !item.isDone);
   }
   //focus input
   const editTodoHeader = (id, text)=>{
@@ -104,31 +112,67 @@ const App = () => {
   const toggleScroll= ()=>{
     setScroll(scroll==false?true:false)
   }
+
+  //==================axios CRUD================================
   function addTodo(text){
-    dispatch({
-      type:'add',
+    axios.post('https://6588fac4324d4171525855f8.mockapi.io/api/todos', {
+      id: 1,
       text:text,
+      isDone: false,
+    },...arr)
+     
+    .then(res=>{
+      dispatch({
+        type:todoAction.add,
+        text:text,
+      })
+      console.log(res)
+    })
+    .catch(err=>{
+      console.log("Error:", err)
     })
   }
+
   function delTodo(id){
-    dispatch({
-      type:'delete',
-      id:id,
+    axios.delete('https://6588fac4324d4171525855f8.mockapi.io/api/todos/'+id)
+    .then(res=>{
+      dispatch({
+        type:todoAction.delete,
+        id:id
+      })
+    })
+    .catch(err=>{
+      console.log("Error:", err,"id:", id)
     })
   }
+  
   function updateTodo(id,text){
-    dispatch({
-      type:'update',
-      id:id,
-      text:text,
+    axios.put('https://6588fac4324d4171525855f8.mockapi.io/api/todos/'+id,{text:text})
+    .then(res=>{
+      dispatch({
+        type:todoAction.update,
+        id:id,
+        text:text
+      })
+    })
+    .catch(err=>{
+      console.log("Error:", err,"id:", id)
     })
   }
+
   function clickCheckBox(item){
-    dispatch({
-      type:'checkbox',
-      id:item.id,
+    axios.put('https://6588fac4324d4171525855f8.mockapi.io/api/todos/'+item.id,{isDone: item.isDone})
+    .then(res=>{
+      dispatch({
+        type:todoAction.checkbox,
+        id:item.id,
+      })
+    })
+    .catch(err=>{
+      console.log("Error:", err,"id:", item.id)
     })
   }
+    
   
   return (
       <div className={"w-3/4 !h-[610px] bg-red-300 mx-auto " + theme}>

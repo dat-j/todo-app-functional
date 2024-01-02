@@ -5,6 +5,7 @@ const Todo = (props) => {
   const [todoText, setTodoText] = useState(todo.text);
   const [todoEdititngId, setTodoEditingId] = useState("");
   const isEditing = todoEdititngId === todo.id;
+  const checked = todo.isDone
   const getEditTodo = (id) => {
     setTodoEditingId(id);
   };
@@ -17,13 +18,26 @@ const Todo = (props) => {
   };
   return (
     <div className="w-full h-10 border-2 my-1 rounded-lg flex items-center space-x-20 bg-white border-red-500">
-      <div className="h-5 w-5 m-2 rounded-full bg-red-400">
+      {
+        !checked?(
+          <div className="h-5 w-5 m-2 rounded-full bg-red-400">
         <input
           onClick={()=>clickCheckBox(todo)}
           type="checkbox"
           className="h-full w-full border-8"
         ></input>
       </div>
+        ):(
+          <div className="h-5 w-5 m-2 rounded-full bg-red-400">
+        <input
+          onClick={()=>clickCheckBox(todo)}
+          type="checkbox"
+          className="h-full w-full border-8"
+          checked
+        ></input>
+      </div>
+        )
+      }
       {!isEditing ? (
         <label
           onDoubleClick={getEditTodo(todo.id)}
