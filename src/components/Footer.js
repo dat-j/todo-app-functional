@@ -1,5 +1,5 @@
 import React from "react";
-import { filterStatus } from "../App";
+import { filterStatus } from "./function/todoReducer";
 
 const Footer = ({ todoLeft, setTodoStatus }) => {
   return (

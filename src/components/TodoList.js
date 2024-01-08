@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import Todo from "./Todo";
 import WithScroll from "./HOC";
-import "./TodoList.css"
+import "./TodoList.css";
 
 const TodoList = (props) => {
   const { arr, scroll, list, handleScroll, loading } = props;
@@ -67,9 +67,11 @@ const TodoList = (props) => {
               ))}
             </li>
           </ul>
-          {loading && <div className="flex justify-center">
-            <div className="dashed-loading"></div>
-          </div> }
+          {loading && (
+            <div className="flex justify-center">
+              <div className="dashed-loading"></div>
+            </div>
+          )}
         </div>
       )}
     </div>
