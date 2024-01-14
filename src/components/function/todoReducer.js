@@ -26,7 +26,7 @@ export const filterByStatus = (arr, status) => {
 export const filterItemLeft = (arr) => {
   return arr?.filter((item) => !item.isDone);
 }
-export function todoReducer(arr, action) {
+export const todoReducer = ( arr  , action) => {
   switch (action.type) {
     case todoAction.getData: {
       return action.data;
@@ -53,13 +53,13 @@ export function todoReducer(arr, action) {
         return todo;
       });
     }
-    case todoAction.updateID:{
+    case todoAction.updateID: {
       return arr.map((todo) => {
-        if (todo.id === action.id) {
+        if (todo.id === action.virtualID) {
           return { ...todo, id: action.id };
+        } else {
+          return todo;
         }
-        else
-        return todo;
       });
     }
     case todoAction.checkbox: {

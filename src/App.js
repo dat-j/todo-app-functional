@@ -2,15 +2,16 @@
 import { useContext, useEffect, useRef, useState, useReducer } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+
 //import css
 import "./App.css";
 //import function
 import {
-  todoReducer,
   todoAction,
   filterByStatus,
   filterItemLeft,
   filterStatus,
+  todoReducer,
 } from "./components/function/todoReducer";
 
 //import component
@@ -21,6 +22,8 @@ import Toggle from "./components/Toggle";
 import Loading from "./components/loading/Loading";
 import { themeContext } from "./components/ThemeProvider";
 import TodolistTest from "./components/TodolistTest";
+import  {Counter} from "./components/Counter";
+
 
 // ========================done import===============================
 
@@ -39,6 +42,7 @@ const App = () => {
   const setTodoStatus = (value) => {
     setStatus(value);
   };
+
   //get data from api
   useEffect(() => {
     axios
@@ -75,6 +79,7 @@ const App = () => {
   //==================axios CRUD================================
   function addTodo(text) {
     let virtualID = new Date().valueOf();
+    let virtualID2 = virtualID;
     dispatch({
       type: todoAction.add,
       text: text,
@@ -88,14 +93,12 @@ const App = () => {
       })
 
       .then((res) => {
-        virtualID = res.data.ids;
-        axios
-          .put("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + virtualID, {id: virtualID});
+        
         dispatch({
-          // type: todoAction.updateID,
-          // id: virtualID
+          type: todoAction.updateID,
+          id: res.data.ids,
+          virtualID: virtualID
         })
-        console.log("tempID:", virtualID)
           
       })
       .catch((err) => {
@@ -185,14 +188,10 @@ const App = () => {
         setTodoStatus={setTodoStatus}
         todoLeft={filterItemLeft(arr).length}
       />
-      {/* <button
-        className="bg-red-300 cursor-pointer p-10 relative left-[700px] top-[-300px]"
-        onClick={check}
-      >
-        check
-      </button> */}
+      <Counter/>
     </div>
   );
 };
+
 
 export default App;
