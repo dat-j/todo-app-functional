@@ -22,7 +22,7 @@ import Toggle from "./components/Toggle";
 import Loading from "./components/loading/Loading";
 import { themeContext } from "./components/ThemeProvider";
 import TodolistTest from "./components/TodolistTest";
-import  {Counter} from "./components/Counter";
+
 
 
 // ========================done import===============================
@@ -188,7 +188,6 @@ const App = () => {
         setTodoStatus={setTodoStatus}
         todoLeft={filterItemLeft(arr).length}
       />
-      <Counter/>
     </div>
   );
 };
