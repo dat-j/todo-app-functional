@@ -7,9 +7,11 @@ import React, {
 import Todo from "./Todo";
 import WithScroll from "./HOC";
 import "./TodoList.css";
+import { connect } from 'react-redux';
+import { filterByStatus, filterStatus, initialState } from "./function/todoReducer";
 
 const TodoList = (props) => {
-  const { arr, scroll, list, handleScroll, loading } = props;
+  const { arr, todoListStatus, scroll, list, handleScroll, loading } = props;
   const [currentPage, setCurrentPage] = useState(1);
   const todosPerPage = 5;
   const handlePageClick = (e) => {
@@ -77,5 +79,12 @@ const TodoList = (props) => {
     </div>
   );
 };
-export default WithScroll(TodoList);
+const mapStateToProps = (state) => ({
+  arr: filterByStatus(state.todos,state.listStatus )
+});
+
+const mapDispatch = {
+
+}
+export default connect(mapStateToProps,mapDispatch)(WithScroll(TodoList));
 // export default TodoList;

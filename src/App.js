@@ -22,8 +22,9 @@ import Toggle from "./components/Toggle";
 import Loading from "./components/loading/Loading";
 import { themeContext } from "./components/ThemeProvider";
 import TodolistTest from "./components/TodolistTest";
-
-
+import { initialState } from "./components/function/todoReducer";
+import store from "./store/store";
+import { useSelector } from "react-redux";
 
 // ========================done import===============================
 
@@ -33,22 +34,19 @@ const notify = () => {
 
 const App = () => {
   const [list, setList] = useState([]);
-  const [arr, dispatch] = useReducer(todoReducer, list);
+  // const [arr, setArr] = useState(store.getState())
+  // const [arr, dispatch] = useReducer(todoReducer, list);
   const [loading, setLoading] = useState(true);
   const [scroll, setScroll] = useState(false);
   const { theme } = useContext(themeContext);
   const headerRef = useRef(null);
-  const [status, setStatus] = useState(filterStatus.all);
-  const setTodoStatus = (value) => {
-    setStatus(value);
-  };
 
   //get data from api
   useEffect(() => {
     axios
       .get("https://6588fac4324d4171525855f8.mockapi.io/api/todos")
       .then((res) => {
-        dispatch({
+        store.dispatch({
           type: todoAction.getData,
           data: res.data,
         });
@@ -61,9 +59,8 @@ const App = () => {
   ///////////////////////////////checking area////////////////////////////
   const check = () => {
     
-    console.log("list", list);
+    console.log("store:", store.getState());
   };
-
   ////////////////////////////////////////////////////////////////////////
 
   //focus input
@@ -78,79 +75,100 @@ const App = () => {
   };
   //==================axios CRUD================================
   function addTodo(text) {
-    let virtualID = new Date().valueOf();
-    let virtualID2 = virtualID;
-    dispatch({
-      type: todoAction.add,
-      text: text,
-      id: virtualID
-    });
-    axios
-      .post("https://6588fac4324d4171525855f8.mockapi.io/api/todos", {
-        id: virtualID,
-        text: text,
-        isDone: false,
-      })
+    store.dispatch(
+      {
+        type:todoAction.add,
+        id:1,
+        text:text
+      }
+    )
+    // let virtualID = new Date().valueOf();
+    // dispatch({
+    //   type: todoAction.add,
+    //   text: text,
+    //   id: virtualID
+    // });
+    // axios
+    //   .post("https://6588fac4324d4171525855f8.mockapi.io/api/todos", {
+    //     id: virtualID,
+    //     text: text,
+    //     isDone: false,
+    //   })
 
-      .then((res) => {
-        
-        dispatch({
-          type: todoAction.updateID,
-          id: res.data.ids,
-          virtualID: virtualID
-        })
+    //   .then((res) => {
+    //     axios.put("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + res.data.ids, {
+    //       id: res.data.ids,
+    //     })
+    //     dispatch({
+    //       type: todoAction.updateID,
+    //       id: res.data.ids,
+    //       virtualID: virtualID
+    //     })
           
-      })
-      .catch((err) => {
-        console.log("Error:", err);
-      });
+    //   })
+    //   .catch((err) => {
+    //     console.log("Error:", err);
+    //   });
   }
 
   function delTodo(id) {
-    axios
-      .delete("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + id)
-      .then((res) => {
-        dispatch({
-          type: todoAction.delete,
-          id: id,
-        });
-      })
-      .catch((err) => {
-        console.log("Error:", err, "id:", id);
-      });
+    store.dispatch({
+      type:todoAction.delete,
+      id:id
+    })
+    // axios
+    //   .delete("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + id)
+    //   .then((res) => {
+    //     dispatch({
+    //       type: todoAction.delete,
+    //       id: id,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log("Error:", err, "id:", id);
+    //   });
   }
 
   function updateTodo(id, text) {
-    axios
-      .put("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + id, {
-        text: text,
-      })
-      .then((res) => {
-        dispatch({
-          type: todoAction.update,
-          id: id,
-          text: text,
-        });
-      })
-      .catch((err) => {
-        console.log("Error:", err, "id:", id);
-      });
+    store.dispatch({
+      type: todoAction.update,
+      id:id,
+      text: text
+    })
+    // axios
+    //   .put("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + id, {
+    //     text: text,
+    //   })
+    //   .then((res) => {
+    //     dispatch({
+    //       type: todoAction.update,
+    //       id: id,
+    //       text: text,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log("Error:", err, "id:", id);
+    //   });
   }
 
   function clickCheckBox(item) {
-    axios
-      .put("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + item.id, {
-        isDone: item.isDone,
-      })
-      .then((res) => {
-        dispatch({
-          type: todoAction.checkbox,
-          id: item.id,
-        });
-      })
-      .catch((err) => {
-        console.log("Error:", err, "id:", item.id);
-      });
+    store.dispatch({
+      type:todoAction.checkbox,
+      id: item.id
+    })
+    // axios
+    //   .put("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + item.id, {
+    //     isDone: item.isDone,
+    //   })
+    //   .then((res) => {
+    //     dispatch({
+    //       type: todoAction.checkbox,
+    //       id: item.id,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log("Error:", err, "id:", item.id);
+    //   });
   }
   return (
     <div className={"w-3/4 !h-[610px] bg-red-300 mx-auto " + theme}>
@@ -174,7 +192,7 @@ const App = () => {
         <Loading />
       ) : (
         <TodoList
-          arr={filterByStatus(arr, status)}
+          // arr={filterByStatus(arr, status)}
           editTodoHeader={editTodoHeader}
           scroll={scroll}
           delTodo={delTodo}
@@ -185,9 +203,8 @@ const App = () => {
 
       {/* <TodolistTest arr={filterByStatus(arr,status)}/> */}
       <Footer
-        setTodoStatus={setTodoStatus}
-        todoLeft={filterItemLeft(arr).length}
       />
+      <button className="h-6 w-[100px] bg-red-400" onClick={check}>CHECK</button>
     </div>
   );
 };

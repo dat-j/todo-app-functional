@@ -1,17 +1,77 @@
-export const todoAction = {
-  getData: "getData",
-  add: "add",
-  delete: "delete",
-  update: "update",
-  updateID:"update ID",
-  checkbox: "click check box",
+
+
+export const initialState = {
+  test : 1,
+  listStatus:'all',
+  todos:[]
+}
+
+export const todoReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case todoAction.getData: {
+      return {
+        ...state,
+        todos: action.data,
+      };
+    }
+    case todoAction.add: {
+      return {
+        ...state,
+        todos: [
+          ...state.todos,
+          {
+            id: action.id,
+            text: action.text,
+            isDone: false,
+          },
+        ],
+      };
+    }
+    case todoAction.delete: {
+      return {
+        ...state,
+        todos: state.todos.filter((item) => item.id !== action.id),
+      };
+    }
+    case todoAction.update: {
+      return {
+        ...state,
+        todos: state.todos.map((todo) => {
+          if (todo.id === action.id) {
+            return { ...todo, text: action.text };
+          } else return todo;
+        }),
+      };
+    }
+    case todoAction.updateID: {
+      return {
+        ...state,
+        todos: state.todos.map((todo) => {
+          if (todo.id === action.virtualID) {
+            return { ...todo, id: action.id };
+          } else {
+            return todo;
+          }
+        }),
+      };
+    }
+    case todoAction.checkbox: {
+      return {
+        ...state,
+        todos: state.todos.map((todo) =>
+          todo.id === action.id ? { ...todo, isDone: !todo.isDone } : todo
+        ),
+      };
+    }
+    case todoAction.setListStatus:{
+      return {...state, listStatus: action.listStatus}
+    }
+    default: {
+      return state;
+    }
+  }
 };
-//filter
-export const filterStatus = {
-  all: "all",
-  done: "done",
-  notDone: "notDone"
-};
+
 
 export const filterByStatus = (arr, status) => {
   switch (status) {
@@ -26,47 +86,19 @@ export const filterByStatus = (arr, status) => {
 export const filterItemLeft = (arr) => {
   return arr?.filter((item) => !item.isDone);
 }
-export const todoReducer = ( arr  , action) => {
-  switch (action.type) {
-    case todoAction.getData: {
-      return action.data;
-    }
-    case todoAction.add: {
-      return [
-        {
-          id: action.id,
-          text: action.text,
-          isDone: false,
-        },
-        ...arr,
-      ];
-    }
-    case todoAction.delete: {
-      return arr.filter((item) => item.id !== action.id);
-    }
-    case todoAction.update: {
-      return arr.map((todo) => {
-        if (todo.id === action.id) {
-          return { ...todo, id: action.id, text: action.text };
-        }
-        else
-        return todo;
-      });
-    }
-    case todoAction.updateID: {
-      return arr.map((todo) => {
-        if (todo.id === action.virtualID) {
-          return { ...todo, id: action.id };
-        } else {
-          return todo;
-        }
-      });
-    }
-    case todoAction.checkbox: {
-      return arr.map((todo) =>
-        todo.id === action.id ? { ...todo, isDone: !todo.isDone } : todo
-      );
-    }
-  }
-}
 
+export const todoAction = {
+  getData: "getData",
+  add: "add",
+  delete: "delete",
+  update: "update",
+  updateID:"update ID",
+  checkbox: "click check box",
+  setListStatus: "set list filter status"
+};
+//filter
+export const filterStatus = {
+  all: "all",
+  done: "done",
+  notDone: "notDone"
+};
