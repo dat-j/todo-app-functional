@@ -38,7 +38,7 @@ const Footer = (props) => {
   );
 };
 
-const mapStateToProps = (state) =>({
-  arr: state.todos
-})
-export default connect(mapStateToProps,null)(Footer);
+const mapStateToProps = (state) => ({
+  arr: state.todos,
+});
+export default connect(mapStateToProps, null)(Footer);

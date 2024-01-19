@@ -1,10 +1,8 @@
-
-
 export const initialState = {
-  test : 1,
-  listStatus:'all',
-  todos:[]
-}
+  test: 1,
+  listStatus: "all",
+  todos: [],
+};
 
 export const todoReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -63,15 +61,14 @@ export const todoReducer = (state = initialState, action) => {
         ),
       };
     }
-    case todoAction.setListStatus:{
-      return {...state, listStatus: action.listStatus}
+    case todoAction.setListStatus: {
+      return { ...state, listStatus: action.listStatus };
     }
     default: {
       return state;
     }
   }
 };
-
 
 export const filterByStatus = (arr, status) => {
   switch (status) {
@@ -85,20 +82,20 @@ export const filterByStatus = (arr, status) => {
 };
 export const filterItemLeft = (arr) => {
   return arr?.filter((item) => !item.isDone);
-}
+};
 
 export const todoAction = {
   getData: "getData",
   add: "add",
   delete: "delete",
   update: "update",
-  updateID:"update ID",
+  updateID: "update ID",
   checkbox: "click check box",
-  setListStatus: "set list filter status"
+  setListStatus: "set list filter status",
 };
 //filter
 export const filterStatus = {
   all: "all",
   done: "done",
-  notDone: "notDone"
+  notDone: "notDone",
 };

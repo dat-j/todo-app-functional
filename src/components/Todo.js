@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { delTodo, updateTodo, clickCheckBox } from "../actions/Action";
 
 const Todo = (props) => {
-  const { todo, delTodo, updateTodo, editTodoHeader, clickCheckBox } = props;
+  const { todo, editTodoHeader } = props;
   const [todoText, setTodoText] = useState(todo.text);
   const [todoEdititngId, setTodoEditingId] = useState("");
   const isEditing = todoEdititngId === todo.id;
-  const checked = todo.isDone
+  const checked = todo.isDone;
   const getEditTodo = (id) => {
     setTodoEditingId(id);
   };
@@ -18,39 +19,41 @@ const Todo = (props) => {
   };
   return (
     <div className="w-full h-10 border-2 my-1 rounded-lg flex items-center space-x-20 bg-white border-red-500">
-      {
-        !checked?(
-          <div className="h-5 w-5 m-2 rounded-full bg-red-400">
-        <input
-          onClick={()=>clickCheckBox(todo)}
-          type="checkbox"
-          className="h-full w-full border-8"
-        ></input>
-      </div>
-        ):(
-          <div className="h-5 w-5 m-2 rounded-full bg-red-400">
-        <input
-          onClick={()=>clickCheckBox(todo)}
-          type="checkbox"
-          className="h-full w-full border-8"
-          checked
-        ></input>
-      </div>
-        )
-      }
+      {!checked ? (
+        <div className="h-5 w-5 m-2 rounded-full bg-red-400">
+          <input
+            onClick={() => clickCheckBox(todo)}
+            type="checkbox"
+            className="h-full w-full border-8"
+          ></input>
+        </div>
+      ) : (
+        <div className="h-5 w-5 m-2 rounded-full bg-red-400">
+          <input
+            onClick={() => clickCheckBox(todo)}
+            type="checkbox"
+            className="h-full w-full border-8"
+            checked
+          ></input>
+        </div>
+      )}
       {!isEditing ? (
         <label
           onDoubleClick={getEditTodo(todo.id)}
           className="flex items-center w-1/2"
         >
-           {todo.text}
+          {todo.text}
         </label>
       ) : (
         <input
           type="text"
           onChange={(e) => setTodoText(e.target.value)}
           onKeyDown={handleKeyDown}
-          className={todo.isDone?"flex items-center w-1/2 line-through":"flex items-center w-1/2"}
+          className={
+            todo.isDone
+              ? "flex items-center w-1/2 line-through"
+              : "flex items-center w-1/2"
+          }
           defaultValue={todo.text}
         ></input>
       )}

@@ -1,18 +1,13 @@
 //import lib
 import { useContext, useEffect, useRef, useState, useReducer } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 
 //import css
 import "./App.css";
 //import function
-import {
-  todoAction,
-  filterByStatus,
-  filterItemLeft,
-  filterStatus,
-  todoReducer,
-} from "./components/function/todoReducer";
+import { todoAction } from "./components/function/todoReducer";
 
 //import component
 import Footer from "./components/Footer";
@@ -22,20 +17,10 @@ import Toggle from "./components/Toggle";
 import Loading from "./components/loading/Loading";
 import { themeContext } from "./components/ThemeProvider";
 import TodolistTest from "./components/TodolistTest";
-import { initialState } from "./components/function/todoReducer";
 import store from "./store/store";
-import { useSelector } from "react-redux";
 
 // ========================done import===============================
-
-const notify = () => {
-  toast("done");
-};
-
 const App = () => {
-  const [list, setList] = useState([]);
-  // const [arr, setArr] = useState(store.getState())
-  // const [arr, dispatch] = useReducer(todoReducer, list);
   const [loading, setLoading] = useState(true);
   const [scroll, setScroll] = useState(false);
   const { theme } = useContext(themeContext);
@@ -58,7 +43,7 @@ const App = () => {
   }, []);
   ///////////////////////////////checking area////////////////////////////
   const check = () => {
-    
+    toast("DOne")
     console.log("store:", store.getState());
   };
   ////////////////////////////////////////////////////////////////////////
@@ -73,109 +58,13 @@ const App = () => {
   const toggleScroll = () => {
     setScroll(scroll == false ? true : false);
   };
-  //==================axios CRUD================================
-  function addTodo(text) {
-    store.dispatch(
-      {
-        type:todoAction.add,
-        id:1,
-        text:text
-      }
-    )
-    // let virtualID = new Date().valueOf();
-    // dispatch({
-    //   type: todoAction.add,
-    //   text: text,
-    //   id: virtualID
-    // });
-    // axios
-    //   .post("https://6588fac4324d4171525855f8.mockapi.io/api/todos", {
-    //     id: virtualID,
-    //     text: text,
-    //     isDone: false,
-    //   })
 
-    //   .then((res) => {
-    //     axios.put("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + res.data.ids, {
-    //       id: res.data.ids,
-    //     })
-    //     dispatch({
-    //       type: todoAction.updateID,
-    //       id: res.data.ids,
-    //       virtualID: virtualID
-    //     })
-          
-    //   })
-    //   .catch((err) => {
-    //     console.log("Error:", err);
-    //   });
-  }
-
-  function delTodo(id) {
-    store.dispatch({
-      type:todoAction.delete,
-      id:id
-    })
-    // axios
-    //   .delete("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + id)
-    //   .then((res) => {
-    //     dispatch({
-    //       type: todoAction.delete,
-    //       id: id,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log("Error:", err, "id:", id);
-    //   });
-  }
-
-  function updateTodo(id, text) {
-    store.dispatch({
-      type: todoAction.update,
-      id:id,
-      text: text
-    })
-    // axios
-    //   .put("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + id, {
-    //     text: text,
-    //   })
-    //   .then((res) => {
-    //     dispatch({
-    //       type: todoAction.update,
-    //       id: id,
-    //       text: text,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log("Error:", err, "id:", id);
-    //   });
-  }
-
-  function clickCheckBox(item) {
-    store.dispatch({
-      type:todoAction.checkbox,
-      id: item.id
-    })
-    // axios
-    //   .put("https://6588fac4324d4171525855f8.mockapi.io/api/todos/" + item.id, {
-    //     isDone: item.isDone,
-    //   })
-    //   .then((res) => {
-    //     dispatch({
-    //       type: todoAction.checkbox,
-    //       id: item.id,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log("Error:", err, "id:", item.id);
-    //   });
-  }
   return (
     <div className={"w-3/4 !h-[610px] bg-red-300 mx-auto " + theme}>
       <h1 className="text-center text-8xl text-rose-400 font-bold">TODOS</h1>
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={1500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -185,29 +74,22 @@ const App = () => {
         pauseOnHover
         theme="light"
       />
-      <ToastContainer />
-      <Header ref={headerRef} addTodo={addTodo} updateTodo={updateTodo} />
+      <Header ref={headerRef} />
       <Toggle toggleScroll={toggleScroll} />
       {loading ? (
         <Loading />
       ) : (
         <TodoList
-          // arr={filterByStatus(arr, status)}
           editTodoHeader={editTodoHeader}
           scroll={scroll}
-          delTodo={delTodo}
-          clickCheckBox={clickCheckBox}
-          updateTodo={updateTodo}
         />
       )}
-
-      {/* <TodolistTest arr={filterByStatus(arr,status)}/> */}
-      <Footer
-      />
-      <button className="h-6 w-[100px] bg-red-400" onClick={check}>CHECK</button>
+      <Footer />
+      <button className="h-6 w-[100px] bg-red-400" onClick={check}>
+        CHECK
+      </button>
     </div>
   );
 };
-
 
 export default App;
